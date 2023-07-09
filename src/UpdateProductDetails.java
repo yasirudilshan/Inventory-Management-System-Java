@@ -138,10 +138,10 @@ public final class UpdateProductDetails extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         test = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1024, 768));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -226,7 +226,7 @@ public final class UpdateProductDetails extends javax.swing.JFrame {
         jLabel5.setText("Product Name");
         jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 50, 220, 40));
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 1000, 310));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 1000, 310));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -276,10 +276,10 @@ public final class UpdateProductDetails extends javax.swing.JFrame {
         jLabel16.setText("Email");
         jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 220, 40));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 1000, 230));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 1000, 230));
 
-        test.setText("jLabel17");
-        getContentPane().add(test, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 10, 180, 30));
+        test.setText("id");
+        getContentPane().add(test, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 20, 180, 30));
 
         jButton1.setText("Delete Product");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -287,15 +287,7 @@ public final class UpdateProductDetails extends javax.swing.JFrame {
                 jButton1MouseClicked(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 630, 140, 40));
-
-        jButton2.setText("Close");
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton2MouseClicked(evt);
-            }
-        });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 10, 140, 40));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 670, 140, 40));
 
         jButton3.setText("Update");
         jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -303,16 +295,14 @@ public final class UpdateProductDetails extends javax.swing.JFrame {
                 jButton3MouseClicked(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 630, 140, 40));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 670, 140, 40));
+
+        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Build Mart.png"))); // NOI18N
+        getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 100));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-        // TODO add your handling code here:
-        dispose();
-    }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
         // TODO add your handling code here:
@@ -362,6 +352,7 @@ public final class UpdateProductDetails extends javax.swing.JFrame {
             Logger.getLogger(main_interface.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Update Failed");
         }
+        dispose();
     }//GEN-LAST:event_jButton3MouseClicked
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
@@ -433,7 +424,6 @@ public final class UpdateProductDetails extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -443,6 +433,7 @@ public final class UpdateProductDetails extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

@@ -1,5 +1,6 @@
 
 import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -19,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author ACER
  */
-public class main_interface extends javax.swing.JFrame {
+public final class main_interface extends javax.swing.JFrame {
 
     String selectedProduct="";
     /**
@@ -28,8 +30,39 @@ public class main_interface extends javax.swing.JFrame {
     public main_interface() {
         FlatLightLaf.setup();
         initComponents();
+        loadtbldata();
     }
 
+    public void loadtbldata(){
+        DefaultTableModel table=(DefaultTableModel)tblViewItem.getModel();
+        table.setRowCount(0);
+     
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/inventory","root","");
+            Statement st=con.createStatement();
+            String sql="select * from product";
+            ResultSet rs = st.executeQuery(sql);
+            
+        
+            
+            while(rs.next()){
+                
+                String name=rs.getString("product_id");
+                String price=rs.getString("product_name");
+                String category=rs.getString("category");  
+                String quantity=rs.getString("quantity");  
+                String tbdata[]={name,price,category,quantity};
+                
+                table.addRow(tbdata);
+                
+            }
+                
+            
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(main_interface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,17 +77,15 @@ public class main_interface extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         inventoryPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblViewItem = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         test = new javax.swing.JLabel();
         salesPanel = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 1000));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -64,6 +95,7 @@ public class main_interface extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 960));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -84,21 +116,23 @@ public class main_interface extends javax.swing.JFrame {
                 jLabel8MouseClicked(evt);
             }
         });
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 140, 40));
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 140, 40));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 190, 640));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("Add Inventory");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
 
-        jLabel1.setText("jLabel1");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 150, 50));
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Inventory Management System");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 0, 750, 50));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 190, 660));
 
         inventoryPanel.setBackground(new java.awt.Color(255, 255, 255));
         inventoryPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        tblViewItem.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         tblViewItem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -107,9 +141,23 @@ public class main_interface extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Product ID", "Product Name", "Category", "Quantity"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblViewItem.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tblViewItem.setRowMargin(5);
+        tblViewItem.setShowGrid(true);
+        tblViewItem.setShowHorizontalLines(true);
+        tblViewItem.setShowVerticalLines(true);
+        tblViewItem.setSurrendersFocusOnKeystroke(true);
         tblViewItem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblViewItemMouseClicked(evt);
@@ -117,15 +165,7 @@ public class main_interface extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblViewItem);
 
-        inventoryPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 860, 540));
-
-        jButton1.setText("Add Inventory");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
-            }
-        });
-        inventoryPanel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 30, 180, 40));
+        inventoryPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 860, 540));
 
         jButton2.setText("View Product Information");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -133,7 +173,7 @@ public class main_interface extends javax.swing.JFrame {
                 jButton2MouseClicked(evt);
             }
         });
-        inventoryPanel.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 640, 170, 40));
+        inventoryPanel.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 580, 170, 40));
 
         jButton3.setText("Update");
         jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -141,12 +181,12 @@ public class main_interface extends javax.swing.JFrame {
                 jButton3MouseClicked(evt);
             }
         });
-        inventoryPanel.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 640, 130, 40));
+        inventoryPanel.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 580, 130, 40));
 
         test.setText("test");
-        inventoryPanel.add(test, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 300, 110, 40));
+        inventoryPanel.add(test, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 20, 110, 40));
 
-        jPanel1.add(inventoryPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 70, 1140, 700));
+        jPanel1.add(inventoryPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 110, 1140, 660));
 
         salesPanel.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -158,12 +198,15 @@ public class main_interface extends javax.swing.JFrame {
         );
         salesPanelLayout.setVerticalGroup(
             salesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
 
-        jPanel1.add(salesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 70, 1140, 640));
+        jPanel1.add(salesPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 110, 1140, 600));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 770));
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/topbanner.png"))); // NOI18N
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1390, 100));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 820));
 
         pack();
         setLocationRelativeTo(null);
@@ -181,41 +224,10 @@ public class main_interface extends javax.swing.JFrame {
         inventoryPanel.setVisible(true);
         salesPanel.setVisible(false);
         
-        DefaultTableModel table=(DefaultTableModel)tblViewItem.getModel();
-        table.setRowCount(0);
-        
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/inventory","root","");
-            Statement st=con.createStatement();
-            String sql="select * from product";
-            ResultSet rs = st.executeQuery(sql);
-            
-            while(rs.next()){
-                
-                String name=rs.getString("product_id");
-                String price=rs.getString("product_name");
-                String category=rs.getString("category");  
-                String quantity=rs.getString("quantity");  
-                String tbdata[]={name,price,category,quantity};
-                
-                table.addRow(tbdata);
-                
-            }
-                
-            
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(main_interface.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        loadtbldata();
         
         
     }//GEN-LAST:event_jLabel8MouseClicked
-
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        // TODO add your handling code here:
-        addItem a=new addItem();
-        a.show();
-    }//GEN-LAST:event_jButton1MouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
         // TODO add your handling code here:
@@ -241,10 +253,21 @@ public class main_interface extends javax.swing.JFrame {
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
         // TODO add your handling code here:
-        ViewProductInformation v=new ViewProductInformation();
+        if(selectedProduct.equals("")){
+            JOptionPane.showMessageDialog(this, "Please Select a field");
+        }
+        else{
+        ViewProductInformation v=new ViewProductInformation(selectedProduct);
         v.show();
+        }
         
     }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        // TODO add your handling code here:
+        addItem a=new addItem();
+        a.show();
+    }//GEN-LAST:event_jLabel1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -283,7 +306,6 @@ public class main_interface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel inventoryPanel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
